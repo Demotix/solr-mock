@@ -1,5 +1,6 @@
 {
   "name": "solr-mock",
+  "version": "0.0.1",
   "description": "A solr mock server",
   "author": "Cesar Canassa <cesar.canassa@gmail.com>",
   "dependencies": {
