@@ -12,6 +12,7 @@ var parser = peg.buildParser(fs.readFileSync('lucene-query.grammar', {encoding: 
 var DB = {};
 var SCORE = 0.48526156;
 
+var solrBaseUrl = '/solr/' + process.argv[3] + '/' || '';
 
 function findEntries(query) {
     var searchQuery = parser.parse(query).left,
@@ -81,9 +82,7 @@ function deleteDb(result) {
 
 
 function route(req, res, body, queryData) {
-
-    if (req.url.indexOf('/solr/update/') === 0) {
-
+    if (req.url.indexOf(solrBaseUrl + 'update') === 0) {
         parseString(body, function (err, result) {
             if (result.add) addEntry(result);
             if (result.delete) deleteDb(result);
@@ -98,7 +97,7 @@ function route(req, res, body, queryData) {
             '</response>');
         res.end();
     }
-    else if (req.url.indexOf('/solr/select/') === 0) {
+    else if (req.url.indexOf(solrBaseUrl +  'select') === 0) {
         var found = findEntries(queryData.q);
 
         res.writeHead(200, {'Content-Type': 'application/json'});
